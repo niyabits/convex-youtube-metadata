@@ -23,21 +23,19 @@ import type { FunctionReference } from "convex/server";
  */
 export type ComponentApi<Name extends string | undefined = string | undefined> =
   {
-    googleapi: {
-      fetchVideoMetadata: FunctionReference<
-        "action",
-        "internal",
-        { apiKey: string; videoId: string },
-        any,
-        Name
-      >;
-    };
     lib: {
       add: FunctionReference<
         "mutation",
         "internal",
         { targetId: string; text: string; userId: string },
         string,
+        Name
+      >;
+      fetchVideoMetadata: FunctionReference<
+        "action",
+        "internal",
+        { apiKey: string; videoId: string },
+        any,
         Name
       >;
       list: FunctionReference<

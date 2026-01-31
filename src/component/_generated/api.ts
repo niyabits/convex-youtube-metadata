@@ -8,7 +8,6 @@
  * @module
  */
 
-import type * as googleapi from "../googleapi.js";
 import type * as lib from "../lib.js";
 import type * as video from "../video.js";
 
@@ -20,7 +19,6 @@ import type {
 import { anyApi, componentsGeneric } from "convex/server";
 
 const fullApi: ApiFromModules<{
-  googleapi: typeof googleapi;
   lib: typeof lib;
   video: typeof video;
 }> = anyApi as any;

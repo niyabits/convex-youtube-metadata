@@ -27,6 +27,7 @@ function BlogPostComments({ postId }: { postId: string }) {
   const comments = useQuery(api.example.list, { targetId: postId });
   const addComment = useMutation(api.example.add);
   const translateComment = useAction(api.example.translateComment);
+  // const fetchYouTubeVideo = useAction(api.example)
   const [commentText, setCommentText] = useState("");
 
   const handleAddComment = () => {
