@@ -27,7 +27,7 @@ export const storeVideo = mutation({
   }
 })
 
-export const getVideoMetadata = query({
+export const getMetadata = query({
   args: {
     videoId: v.string(),
   },
@@ -40,3 +40,4 @@ export const getVideoMetadata = query({
     return video
   }
 })
+

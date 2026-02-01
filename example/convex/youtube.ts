@@ -1,6 +1,7 @@
 import { action, query } from "./_generated/server.js";
 import { components } from "./_generated/api.js";
 import { v } from "convex/values";
+import { exposeApi } from "convex-youtube-metadata";
 
 export const fetchVideoMetadata = action({
   args: { videoId: v.string() },
@@ -21,8 +22,16 @@ export const getVideoMetadata = query({
   returns: v.any(),
   handler(ctx, args) {
 
-    return ctx.runQuery(components.convexYoutubeMetadata.video.getVideoMetadata, {
+    return ctx.runQuery(components.convexYoutubeMetadata.video.getMetadata, {
       videoId: args.videoId
     })
   },
 })
+
+
+// Re-exporting the component's API:
+export const { list } = exposeApi(components.convexYoutubeMetadata, {
+  auth: async (_, __) => {
+    return ""
+  },
+});

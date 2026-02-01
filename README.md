@@ -1,5 +1,9 @@
 # Convex YouTube Metadata 
 
+⚠️ Highly Experimental 
+The Convex Component is highly experimental and undergoing rapid development. 
+Expect all the APIs to break.
+
 ## Getting Started 
 
 1. Add the Google API Key in `.env`

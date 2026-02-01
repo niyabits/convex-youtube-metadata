@@ -41,26 +41,25 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
       list: FunctionReference<
         "query",
         "internal",
-        { limit?: number; targetId: string },
+        { limit?: number },
         Array<{
           _creationTime: number;
           _id: string;
-          targetId: string;
-          text: string;
-          userId: string;
+          channel: string;
+          description: string;
+          duration: string;
+          likeCount: string;
+          publishedAt: string;
+          thumbnails: string;
+          title: string;
+          videoId: string;
+          viewCount: string;
         }>,
-        Name
-      >;
-      translate: FunctionReference<
-        "action",
-        "internal",
-        { baseUrl: string; commentId: string },
-        string,
         Name
       >;
     };
     video: {
-      getVideoMetadata: FunctionReference<
+      getMetadata: FunctionReference<
         "query",
         "internal",
         { videoId: string },

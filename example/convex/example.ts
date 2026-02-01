@@ -1,4 +1,4 @@
-import { action, mutation, query } from "./_generated/server.js";
+import { action, mutation } from "./_generated/server.js";
 import { components } from "./_generated/api.js";
 import { exposeApi } from "convex-youtube-metadata";
 import { v } from "convex/values";
@@ -19,28 +19,10 @@ export const addComment = mutation({
   },
 });
 
-export const listComments = query({
-  args: { targetId: v.string() },
-  handler: async (ctx, args) => {
-    return await ctx.runQuery(components.convexYoutubeMetadata.lib.list, {
-      targetId: args.targetId,
-    });
-  },
-});
-
-export const translateComment = action({
-  args: { commentId: v.string() },
-  handler: async (ctx, args) => {
-    return await ctx.runAction(components.convexYoutubeMetadata.lib.translate, {
-      baseUrl: BASE_URL,
-      commentId: args.commentId,
-    });
-  },
-});
 
 // Here is an alternative way to use the component's methods directly by re-exporting
 // the component's API:
-export const { list, add, translate } = exposeApi(components.convexYoutubeMetadata, {
+export const { add } = exposeApi(components.convexYoutubeMetadata, {
   auth: async (ctx, operation) => {
     const userId = await getAuthUserId(ctx);
     if (userId === null && operation.type !== "read") {
