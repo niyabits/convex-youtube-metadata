@@ -1,58 +1,17 @@
 import { v } from "convex/values";
 import {
   action,
-  internalMutation,
-  internalQuery,
-  mutation,
   query,
 } from "./_generated/server.js";
 import { api } from "./_generated/api.js";
 import schema from "./schema.js";
 
-const commentValidator = schema.tables.comments.validator.extend({
-  _id: v.id("comments"),
-  _creationTime: v.number(),
-});
 
 const videoValidator = schema.tables.videos.validator.extend({
   _id: v.id("videos"),
   _creationTime: v.number(),
 });
 
-export const getComment = internalQuery({
-  args: {
-    commentId: v.id("comments"),
-  },
-  returns: v.union(v.null(), commentValidator),
-  handler: async (ctx, args) => {
-    return await ctx.db.get("comments", args.commentId);
-  },
-});
-export const add = mutation({
-  args: {
-    text: v.string(),
-    userId: v.string(),
-    targetId: v.string(),
-  },
-  returns: v.id("comments"),
-  handler: async (ctx, args) => {
-    const commentId = await ctx.db.insert("comments", {
-      text: args.text,
-      userId: args.userId,
-      targetId: args.targetId,
-    });
-    return commentId;
-  },
-});
-export const updateComment = internalMutation({
-  args: {
-    commentId: v.id("comments"),
-    text: v.string(),
-  },
-  handler: async (ctx, args) => {
-    await ctx.db.patch("comments", args.commentId, { text: args.text });
-  },
-});
 
 // Test Video URL: dQw4w9WgXcQ
 export const fetchVideoMetadata = action({

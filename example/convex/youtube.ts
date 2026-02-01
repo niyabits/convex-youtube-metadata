@@ -30,8 +30,4 @@ export const getVideoMetadata = query({
 
 
 // Re-exporting the component's API:
-export const { list } = exposeApi(components.convexYoutubeMetadata, {
-  auth: async (_, __) => {
-    return ""
-  },
-});
+export const { list } = exposeApi(components.convexYoutubeMetadata);
