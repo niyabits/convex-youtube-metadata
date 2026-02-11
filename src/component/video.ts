@@ -1,7 +1,13 @@
-import { mutation, query } from "./_generated/server.js";
+import { internalMutation, internalQuery } from "./_generated/server.js";
 import { v } from "convex/values";
+import schema from "./schema.js";
 
-export const storeVideo = mutation({
+const videoValidator = schema.tables.videos.validator.extend({
+  _id: v.id("videos"),
+  _creationTime: v.number(),
+});
+
+export const storeVideo = internalMutation({
   args: {
     videoId: v.string(),
     title: v.string(),
@@ -27,16 +33,14 @@ export const storeVideo = mutation({
   }
 })
 
-export const getMetadata = query({
+export const getMetadata = internalQuery({
   args: {
     videoId: v.string(),
   },
-  // @todo: use schema.videos 
-  returns: v.any(),
+  returns: v.union(videoValidator, v.null()),
   handler: async (ctx, { videoId }) => {
-    const video = ctx.db.query("videos").withIndex("by_videoId", (q) => q.eq("videoId", videoId)).collect()
+    const video = ctx.db.query("videos").withIndex("by_videoId", (q) => q.eq("videoId", videoId)).first()
 
-    // @todo, request the video if not present?
     return video
   }
 })

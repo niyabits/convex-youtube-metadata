@@ -28,40 +28,6 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
         "action",
         "internal",
         { apiKey: string; videoId: string },
-        any,
-        Name
-      >;
-      list: FunctionReference<
-        "query",
-        "internal",
-        { limit?: number },
-        Array<{
-          _creationTime: number;
-          _id: string;
-          channel: string;
-          description: string;
-          duration: string;
-          likeCount: string;
-          publishedAt: string;
-          thumbnails: string;
-          title: string;
-          videoId: string;
-          viewCount: string;
-        }>,
-        Name
-      >;
-    };
-    video: {
-      getMetadata: FunctionReference<
-        "query",
-        "internal",
-        { videoId: string },
-        any,
-        Name
-      >;
-      storeVideo: FunctionReference<
-        "mutation",
-        "internal",
         {
           channel: string;
           description: string;
@@ -73,7 +39,6 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
           videoId: string;
           viewCount: string;
         },
-        any,
         Name
       >;
     };

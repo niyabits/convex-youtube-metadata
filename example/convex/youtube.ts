@@ -1,12 +1,13 @@
-import { action, query } from "./_generated/server.js";
+import { action } from "./_generated/server.js";
 import { components } from "./_generated/api.js";
 import { v } from "convex/values";
-import { exposeApi } from "convex-youtube-metadata";
 
 export const fetchVideoMetadata = action({
   args: { videoId: v.string() },
+  returns: v.any(),
   handler: async (ctx, { videoId }) => {
     if (process.env.GOOGLE_API_KEY === undefined) {
+      console.error("GOOGLE_API_KEY Not Found")
       return
     }
 
@@ -17,17 +18,3 @@ export const fetchVideoMetadata = action({
   },
 });
 
-export const getVideoMetadata = query({
-  args: { videoId: v.string() },
-  returns: v.any(),
-  handler(ctx, args) {
-
-    return ctx.runQuery(components.convexYoutubeMetadata.video.getMetadata, {
-      videoId: args.videoId
-    })
-  },
-})
-
-
-// Re-exporting the component's API:
-export const { list } = exposeApi(components.convexYoutubeMetadata);

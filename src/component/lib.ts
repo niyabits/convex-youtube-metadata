@@ -1,27 +1,28 @@
-import { v } from "convex/values";
+import { v, type Infer } from "convex/values";
 import {
-  action,
-  query,
+  action
 } from "./_generated/server.js";
-import { api } from "./_generated/api.js";
+import { internal } from "./_generated/api.js";
 import schema from "./schema.js";
-
 
 const videoValidator = schema.tables.videos.validator.extend({
   _id: v.id("videos"),
   _creationTime: v.number(),
 });
 
-
 // Test Video URL: dQw4w9WgXcQ
 export const fetchVideoMetadata = action({
   args: { videoId: v.string(), apiKey: v.string() },
-  returns: v.any(),
-  /*
-   * Convex Runtime does not complete Node.js support, so we need to avoid Node.js libs and directly call the API.
-   * */
+  returns: schema.tables.videos.validator,
   handler: async (ctx, { videoId, apiKey }) => {
     const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics,contentDetails&id=${videoId}&key=${apiKey}`;
+
+    // Check if video is in the Database 
+    const video = await ctx.runQuery(internal.video.getMetadata, { videoId }) as Infer<typeof videoValidator>
+    if (video !== null) {
+      const { _id, _creationTime, ...videoData } = video
+      return videoData
+    }
 
     try {
       const res = await fetch(url);
@@ -49,23 +50,11 @@ export const fetchVideoMetadata = action({
         thumbnails: video.snippet.thumbnails.high.url
       };
 
-      await ctx.runMutation(api.video.storeVideo, metadata)
-
+      await ctx.runMutation(internal.video.storeVideo, metadata)
+      return video
     } catch (error) {
       console.error("Failed to fetch metadata:", error);
     }
-  }
-})
-
-export const list = query({
-  args: {
-    limit: v.optional(v.number()),
-  },
-  returns: v.array(videoValidator),
-  handler: async (ctx, { limit }) => {
-    const video = ctx.db.query("videos").order("desc").take(limit ?? 100)
-
-    return video
   }
 })
 

@@ -1,15 +1,29 @@
 import "./App.css";
-import { useQuery } from "convex/react";
+import { useAction } from "convex/react";
 import { api } from "../convex/_generated/api";
+import { useEffect, useState } from "react";
+
+type VideoMetadata = {
+  videoId: string
+  title: string
+  channel: string
+  publishedAt: string
+  description: string
+  viewCount: string
+  likeCount: string
+  duration: string
+  thumbnails: string
+}
 
 const videoId = "dQw4w9WgXcQ"
 
 function VideoDetails() {
-  const videos = useQuery(api.youtube.list, {})
-  const videoMetadata = useQuery(api.youtube.getVideoMetadata, {
-    videoId,
-  })
+  const [videoMetadata, setVideoMetadata] = useState<VideoMetadata | null>(null)
+  const handleFetchVideo = useAction(api.youtube.fetchVideoMetadata)
 
+  useEffect(() => {
+    handleFetchVideo({ videoId }).then(setVideoMetadata)
+  }, [videoId])
 
   return (
     <div
@@ -21,36 +35,11 @@ function VideoDetails() {
       }}
     >
       <h4 style={{ marginTop: 0, marginBottom: "1rem" }}>
-        Videos ({videos?.length ?? 0})
+        Videos
       </h4>
       <div>
         <pre style={{ textAlign: "left" }}> {JSON.stringify(videoMetadata, null, 2)}</pre>
       </div>
-      <ul style={{ textAlign: "left", listStyle: "none", padding: 0 }}>
-        {videos?.map((video: any) => (
-          <li
-            key={video._id}
-            style={{
-              marginBottom: "0.5rem",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              padding: "0.5rem",
-              backgroundColor: "rgba(128, 128, 128, 0.1)",
-              borderRadius: "4px",
-            }}
-          >
-            <span style={{ flex: 1 }}>{video.title}</span>
-          </li>
-        ))}
-        {videos?.length === 0 && (
-          <li
-            style={{ color: "rgba(128, 128, 128, 0.8)", fontStyle: "italic" }}
-          >
-            No videos yet. Be the first to add a video!
-          </li>
-        )}
-      </ul>
     </div>
   );
 }

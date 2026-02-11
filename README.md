@@ -4,6 +4,19 @@
 The Convex Component is highly experimental and undergoing rapid development. 
 Expect all the APIs to break.
 
+## Features 
+
+- [ ] Cache video metadata (title, description, thumbnail, duration, channel info) with configurable TTL
+- [ ] Built-in rate limiter to stay within YouTube API quotas (default: 10,000 units/day)
+- [ ] Reservation system: queue requests when at capacity, wait up to configurable timeout (default 10s) before failing
+- [ ] Return cached data immediately when available, 
+  - [x] fetch fresh data when missing
+  - [ ] fetch fresh data when stale
+- [ ] Support batch lookups for multiple video IDs in a single call
+- [ ] Expose cache stats: hit rate, quota usage, active reservations
+- [ ] Configurable retry logic with exponential backoff on transient failures
+- [x] Pass YouTube API key as configuration (component cannot use environment variables)
+
 ## Getting Started 
 
 1. Add the Google API Key in `.env`
