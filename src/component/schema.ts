@@ -13,5 +13,11 @@ export default defineSchema({
     likeCount: v.string(),
     duration: v.string(),
     thumbnails: v.string()
+  }).index("by_videoId", ["videoId"]),
+
+  videoCacheTTL: defineTable({
+    videoId: v.id("videos"),
+    // ISO Timestamp of the TTL
+    expirationTime: v.int64(),
   }).index("by_videoId", ["videoId"])
 });

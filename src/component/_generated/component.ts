@@ -28,17 +28,18 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
         "action",
         "internal",
         { apiKey: string; videoId: string },
-        {
-          channel: string;
-          description: string;
-          duration: string;
-          likeCount: string;
-          publishedAt: string;
-          thumbnails: string;
-          title: string;
-          videoId: string;
-          viewCount: string;
-        },
+        | {
+            channel: string;
+            description: string;
+            duration: string;
+            likeCount: string;
+            publishedAt: string;
+            thumbnails: string;
+            title: string;
+            videoId: string;
+            viewCount: string;
+          }
+        | { error: string },
         Name
       >;
     };
