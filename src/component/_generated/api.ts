@@ -9,6 +9,7 @@
  */
 
 import type * as lib from "../lib.js";
+import type * as quota from "../quota.js";
 import type * as video from "../video.js";
 
 import type {
@@ -20,6 +21,7 @@ import { anyApi, componentsGeneric } from "convex/server";
 
 const fullApi: ApiFromModules<{
   lib: typeof lib;
+  quota: typeof quota;
   video: typeof video;
 }> = anyApi as any;
 

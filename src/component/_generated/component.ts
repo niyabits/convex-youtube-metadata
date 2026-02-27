@@ -27,19 +27,101 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
       fetchVideoMetadata: FunctionReference<
         "action",
         "internal",
-        { apiKey: string; videoId: string },
-        | {
+        {
+          config: {
+            apiKey: string;
+            dailyQuotaUnits?: number;
+            maxConcurrentReservations?: number;
+            reservationLeaseMs?: number;
+            reservationTimeoutMs?: number;
+            retry?: {
+              initialBackoffMs?: number;
+              maxAttempts?: number;
+              maxBackoffMs?: number;
+              multiplier?: number;
+            };
+            ttlMs?: number;
+          };
+          videoId: string;
+        },
+        {
+          data?: {
             channel: string;
+            channelId: string;
             description: string;
             duration: string;
-            likeCount: string;
+            likeCount?: string;
             publishedAt: string;
             thumbnails: string;
             title: string;
             videoId: string;
-            viewCount: string;
-          }
-        | { error: string },
+            viewCount?: string;
+          };
+          error?: string;
+          ok: boolean;
+          source?: "cache" | "youtube";
+          videoId: string;
+        },
+        Name
+      >;
+      fetchVideoMetadataBatch: FunctionReference<
+        "action",
+        "internal",
+        {
+          config: {
+            apiKey: string;
+            dailyQuotaUnits?: number;
+            maxConcurrentReservations?: number;
+            reservationLeaseMs?: number;
+            reservationTimeoutMs?: number;
+            retry?: {
+              initialBackoffMs?: number;
+              maxAttempts?: number;
+              maxBackoffMs?: number;
+              multiplier?: number;
+            };
+            ttlMs?: number;
+          };
+          videoIds: Array<string>;
+        },
+        {
+          items: Array<{
+            data?: {
+              channel: string;
+              channelId: string;
+              description: string;
+              duration: string;
+              likeCount?: string;
+              publishedAt: string;
+              thumbnails: string;
+              title: string;
+              videoId: string;
+              viewCount?: string;
+            };
+            error?: string;
+            ok: boolean;
+            source?: "cache" | "youtube";
+            videoId: string;
+          }>;
+        },
+        Name
+      >;
+      getCacheStats: FunctionReference<
+        "query",
+        "internal",
+        {},
+        {
+          activeReservations: number;
+          cacheHits: number;
+          cacheMisses: number;
+          hitRate: number;
+          quota: {
+            dayKey: string;
+            quotaLimit: number;
+            remaining: number;
+            unitsUsed: number;
+          };
+        },
         Name
       >;
     };
